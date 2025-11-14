@@ -1,0 +1,897 @@
+/* ====================== ULTRA MODERN UI - FRESH COLOR PALETTE ====================== */
+
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+  padding: 40px 20px;
+  min-height: 100vh;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated Background with Teal & Orange */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(6, 182, 212, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(251, 146, 60, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 20%,
+      rgba(139, 92, 246, 0.12) 0%,
+      transparent 50%
+    );
+  z-index: -1;
+  animation: bgShift 15s ease infinite;
+}
+
+@keyframes bgShift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+/* Container for centering content */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Main Heading with Cyan to Orange gradient */
+h1 {
+  color: #fff;
+  font-size: 3.5rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 50px;
+  letter-spacing: -1px;
+  position: relative;
+  background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #fb923c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 20px 0;
+  text-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+  animation: titleFloat 3s ease-in-out infinite;
+}
+
+@keyframes titleFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+  border-radius: 2px;
+}
+
+/* Section Headings - Teal accent */
+h2 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: -0.5px;
+}
+
+h2::before {
+  content: "";
+  width: 6px;
+  height: 30px;
+  background: linear-gradient(180deg, #06b6d4, #8b5cf6);
+  border-radius: 3px;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+}
+
+h3 {
+  color: #67e8f9;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 30px 0 18px 0;
+  padding-left: 0;
+  border-left: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h3::before {
+  content: "▸";
+  color: #06b6d4;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* Modern Buttons - Cyan to Purple gradient */
+button {
+  background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  margin: 10px 6px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(10px);
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6), 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+/* Primary Login Button - Orange to Pink gradient */
+#loginButton {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ec4899 100%);
+  font-size: 1.2rem;
+  padding: 18px 48px;
+  display: block;
+  margin: 0 auto 40px auto;
+  box-shadow: 0 8px 32px rgba(251, 146, 60, 0.5),
+    0 0 60px rgba(251, 146, 60, 0.3);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+#loginButton::after {
+  content: "→";
+  position: absolute;
+  right: 20px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+#loginButton:hover::after {
+  opacity: 1;
+  right: 30px;
+}
+
+#loginButton:hover {
+  box-shadow: 0 12px 40px rgba(251, 146, 60, 0.7),
+    0 0 80px rgba(251, 146, 60, 0.4);
+  padding-right: 60px;
+}
+
+/* Logout Button - Pink to Orange */
+button[onclick="logoutManager()"] {
+  background: linear-gradient(135deg, #ec4899 0%, #fb923c 100%);
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5);
+  z-index: 1000;
+  border-radius: 50px;
+  padding: 14px 32px;
+}
+
+/* Glass-morphic Input Fields with Teal accent */
+input,
+select {
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 2px solid rgba(6, 182, 212, 0.2);
+  margin: 10px 6px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 220px;
+  font-weight: 500;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #06b6d4;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(6, 182, 212, 0.3);
+  transform: translateY(-2px);
+}
+
+input::placeholder {
+  color: #8b949e;
+  font-weight: 400;
+}
+
+/* Modern Code/Response Box with Cyan text */
+pre {
+  background: rgba(13, 17, 23, 0.8);
+  backdrop-filter: blur(20px);
+  color: #22d3ee;
+  padding: 24px;
+  border-radius: 16px;
+  overflow-x: auto;
+  margin: 20px 0;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  max-height: 450px;
+  overflow-y: auto;
+  font-family: "Courier New", monospace;
+  position: relative;
+}
+
+pre::before {
+  content: "Response";
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 0.75rem;
+  color: #06b6d4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Beautiful Card Grid for displaying data */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Individual data card */
+.data-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.data-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+}
+
+.data-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(6, 182, 212, 0.3);
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+/* Card title */
+.data-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.data-card-title::before {
+  content: "🏨";
+  font-size: 1.5rem;
+}
+
+/* Card content rows */
+.data-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 15px;
+  min-height: 40px;
+}
+
+.data-card-row:last-child {
+  border-bottom: none;
+}
+
+.data-card-label {
+  color: #67e8f9;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+  flex-shrink: 0;
+  min-width: 100px;
+}
+
+.data-card-value {
+  color: #e6edf3;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-align: right;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  flex: 1;
+  line-height: 1.5;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-vacant {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.status-reserved {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
+}
+
+.status-maintenance {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Room type badges */
+.type-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+/* Price display */
+.price-display {
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Service cards */
+.data-card-title.service::before {
+  content: "⚡";
+}
+
+/* Staff cards */
+.data-card-title.staff::before {
+  content: "👤";
+}
+
+/* Customer cards */
+.data-card-title.customer::before {
+  content: "👥";
+}
+
+/* Reservation cards */
+.data-card-title.reservation::before {
+  content: "📅";
+}
+
+/* Payment cards */
+.data-card-title.payment::before {
+  content: "💳";
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #8b949e;
+  font-size: 1.1rem;
+}
+
+.empty-state::before {
+  content: "📭";
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+/* Success/Error messages */
+.message-box {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.message-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #6ee7b7;
+}
+
+.message-success::before {
+  content: "✓";
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.message-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.message-error::before {
+  content: "✕";
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Availability badge for services - Compact Version */
+.availability-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.availability-available {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.availability-unavailable {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+/* Custom Scrollbar - Cyan to Purple */
+pre::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: rgba(13, 17, 23, 0.5);
+  border-radius: 10px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #06b6d4, #8b5cf6);
+  border-radius: 10px;
+  border: 2px solid rgba(13, 17, 23, 0.5);
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b5cf6, #ec4899);
+}
+
+/* Divider with cyan glow */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(6, 182, 212, 0.5) 20%,
+    rgba(6, 182, 212, 0.8) 50%,
+    rgba(6, 182, 212, 0.5) 80%,
+    transparent
+  );
+  margin: 50px 0;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+/* Premium Card Sections */
+section {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  padding: 35px;
+  border-radius: 24px;
+  margin-bottom: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #06b6d4,
+    #8b5cf6,
+    transparent
+  );
+}
+
+section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+/* Manager Login Section - Teal accent */
+#managerLoginSection {
+  display: none;
+  margin-top: 30px;
+  background: rgba(6, 182, 212, 0.08);
+  border: 2px solid rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 60px rgba(6, 182, 212, 0.2);
+}
+
+/* Response Container with cyan glow */
+.response {
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  border-left: 4px solid #06b6d4;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.response::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #06b6d4, #8b5cf6);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+}
+
+.response h3 {
+  margin-top: 0;
+  border-left: none;
+  padding-left: 0;
+}
+
+/* Customer Section - Teal tint */
+.customerSection {
+  background: rgba(6, 182, 212, 0.06);
+  border-color: rgba(6, 182, 212, 0.2);
+}
+
+/* Modern Forms */
+form {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 20px;
+  margin-top: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+form label {
+  display: inline-block;
+  width: 160px;
+  color: #67e8f9;
+  font-weight: 600;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+form input,
+form select {
+  width: calc(100% - 180px);
+  margin-left: 10px;
+}
+
+form button[type="submit"] {
+  margin-top: 25px;
+  width: 100%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  font-size: 1.15rem;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+form button[type="submit"]:hover {
+  box-shadow: 0 12px 40px rgba(16, 185, 129, 0.6);
+}
+
+/* Hidden Form Containers - Green tint */
+#customerFormContainer,
+#paymentFormContainer {
+  background: rgba(16, 185, 129, 0.08);
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  border-radius: 20px;
+  padding: 25px;
+  margin-top: 25px;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Service Booking Section - Orange/Pink */
+#serviceBookingSection {
+  background: rgba(251, 146, 60, 0.06);
+  border: 1px solid rgba(251, 146, 60, 0.2);
+}
+
+#serviceBookingSection label {
+  display: inline-block;
+  width: 160px;
+  color: #fdba74;
+  font-weight: 600;
+  margin-top: 12px;
+  font-size: 0.95rem;
+}
+
+#serviceBookingSection input,
+#serviceBookingSection select {
+  width: calc(100% - 180px);
+  margin-left: 10px;
+}
+
+#payServiceBtn {
+  margin-top: 25px;
+  width: 100%;
+  background: linear-gradient(135deg, #fb923c 0%, #ec4899 100%);
+  font-size: 1.15rem;
+  padding: 16px;
+  font-weight: 700;
+  box-shadow: 0 8px 32px rgba(251, 146, 60, 0.4);
+}
+
+#payServiceBtn:disabled {
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  cursor: not-allowed;
+  opacity: 0.4;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 20px 15px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  button {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    margin: 8px 4px;
+  }
+
+  input,
+  select {
+    min-width: 100%;
+    width: 100%;
+    margin: 8px 0;
+  }
+
+  section {
+    padding: 25px 20px;
+  }
+
+  form label,
+  #serviceBookingSection label {
+    width: 100%;
+    display: block;
+  }
+
+  form input,
+  form select,
+  #serviceBookingSection input,
+  #serviceBookingSection select {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 8px;
+  }
+
+  button[onclick="logoutManager()"] {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin: 0 auto 25px auto;
+    display: block;
+  }
+}
+
+/* Loading animation for sections */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+section:nth-child(1) {
+  animation-delay: 0.1s;
+}
+section:nth-child(2) {
+  animation-delay: 0.2s;
+}
+section:nth-child(3) {
+  animation-delay: 0.3s;
+}
+section:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Badge/Pill style for select options */
+select option {
+  background: #1c1f26;
+  color: #fff;
+  padding: 10px;
+}
+
+/* Micro-interactions on input focus */
+input:focus + button,
+select:focus + button {
+  box-shadow: 0 8px 25px rgba(6, 182, 212, 0.5);
+}
+
+/* Premium glow effect on hover */
+button:hover,
+input:focus,
+section:hover {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.1);
+  }
+}

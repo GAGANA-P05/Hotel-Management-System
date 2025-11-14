@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manager Dashboard - Hotel Management System</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="../js/main1.js" defer></script>
+  </head>
+
+  <body>
+    <h1>Manager Dashboard</h1>
+    <button onclick="logoutManager()">Logout</button>
+    <hr />
+
+    <!-- ================= ROOMS SECTION ================= -->
+    <section>
+      <h2>Rooms</h2>
+      <button onclick="getAllRooms()">Get All Rooms</button>
+      <button onclick="getAvailableRooms()">Get Available</button>
+      <button onclick="getReservedRooms()">Get Reserved</button>
+      <button onclick="getMaintenanceRooms()">Get Maintenance</button>
+      <button onclick="getDeluxeRooms()">Get Deluxe</button>
+      <button onclick="getStandardRooms()">Get Standard</button>
+
+      <input id="roomNumber" type="number" placeholder="Room Number" />
+      <button onclick="getRoomByNumber()">Get Room</button>
+
+      <h3>Update Room Status</h3>
+      <input id="updateRoomNumber" type="number" placeholder="Room Number" />
+      <select id="newStatus">
+        <option value="Vacant">Vacant</option>
+        <option value="Reserved">Reserved</option>
+        <option value="Maintenance">Maintenance</option>
+      </select>
+      <button onclick="updateRoomStatus()">Update</button>
+
+      <h3>Update Room Price</h3>
+      <input
+        id="updatePriceRoomNumber"
+        type="number"
+        placeholder="Room Number"
+      />
+      <input
+        id="newRoomPrice"
+        type="number"
+        placeholder="New Price"
+        step="0.01"
+      />
+      <button onclick="updateRoomPrice()">Update Price</button>
+
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="roomOutput">Waiting for action...</pre>
+      </div>
+      <hr />
+    </section>
+
+    <!-- ================= SERVICES SECTION ================= -->
+    <section>
+      <h2>Services</h2>
+      <button onclick="getAllServices()">Get All Services</button>
+      <button onclick="getAvailableServices()">Get Available</button>
+      <button onclick="getUnavailableServices()">Get Unavailable</button>
+
+      <h3>Get Service by ID</h3>
+      <input id="serviceId" type="number" placeholder="Service ID" />
+      <button onclick="getServiceById()">Get Service</button>
+
+      <h3>Add Service</h3>
+      <input id="serviceName" placeholder="Service name" />
+      <input id="serviceDesc" placeholder="Description" />
+      <input id="servicePrice" placeholder="Price" type="number" />
+      <select id="serviceAvail">
+        <option value="1">Available</option>
+        <option value="0">Unavailable</option>
+      </select>
+      <button onclick="addService()">Add Service</button>
+
+      <h3>Update Service Availability</h3>
+      <input id="updateServiceId" placeholder="Service ID" type="number" />
+      <select id="newAvailability">
+        <option value="1">Available</option>
+        <option value="0">Unavailable</option>
+      </select>
+      <button onclick="updateServiceAvailability()">Update</button>
+
+      <h3>Update Service Details</h3>
+      <input id="updateServiceIdMain" placeholder="Service ID" type="number" />
+      <input id="updateServiceName" placeholder="Service Name" />
+      <input id="updateServiceDesc" placeholder="Description" />
+      <input
+        id="updateServicePrice"
+        placeholder="Price"
+        type="number"
+        step="0.01"
+      />
+      <select id="updateServiceAvailMain">
+        <option value="1">Available</option>
+        <option value="0">Unavailable</option>
+      </select>
+      <button onclick="updateService()">Update Service</button>
+
+      <h3>Delete Service</h3>
+      <input id="deleteServiceId" placeholder="Service ID" type="number" />
+      <button onclick="deleteService()">Delete</button>
+
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="serviceOutput">Waiting for action...</pre>
+      </div>
+    </section>
+    <hr />
+
+    <!-- ================= STAFF SECTION ================= -->
+    <section>
+      <h2>Staffs</h2>
+      <button onclick="getAllStaff()">Get All Staff</button>
+
+      <h3>Get Staff by ID</h3>
+      <input id="staffId" placeholder="Staff ID" type="number" />
+      <button onclick="getStaffById()">Get Staff</button>
+
+      <h3>Get Staff by Task</h3>
+      <select id="staffTaskSelect">
+        <option value="Technician">Technician</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Manager">Manager</option>
+        <option value="Security">Security</option>
+      </select>
+      <button onclick="getStaffByTask()">Get Staff</button>
+
+      <h3>Add Staff</h3>
+      <input id="staffName" placeholder="Name" />
+      <input id="staffEmail" placeholder="Email" />
+      <input id="staffPhone" placeholder="Phone" />
+      <input id="staffAddress" placeholder="Address" />
+      <input id="staffSalary" placeholder="Salary" type="number" />
+      <select id="staffTask">
+        <option value="Technician">Technician</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Security">Security</option>
+        <option value="Manager">Manager</option>
+      </select>
+      <button onclick="addStaff()">Add</button>
+
+      <h3>Update Staff</h3>
+      <input id="updateStaffId" placeholder="Staff ID" type="number" />
+      <input id="updateStaffName" placeholder="Name" />
+      <input id="updateStaffEmail" placeholder="Email" />
+      <input id="updateStaffPhone" placeholder="Phone" />
+      <input id="updateStaffAddress" placeholder="Address" />
+      <input id="updateStaffSalary" placeholder="Salary" type="number" />
+      <select id="updateStaffTask">
+        <option value="Technician">Technician</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Security">Security</option>
+        <option value="Manager">Manager</option>
+      </select>
+      <button onclick="updateStaff()">Update</button>
+
+      <h3>Delete Staff</h3>
+      <input id="deleteStaffId" placeholder="Staff ID" type="number" />
+      <button onclick="deleteStaff()">Delete</button>
+
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="staffOutput">Waiting for action...</pre>
+      </div>
+      <hr />
+    </section>
+
+    <!-- ================= CUSTOMERS SECTION ================= -->
+    <section>
+      <h2>Customers</h2>
+      <button onclick="getAllCustomers()">Get All Customers</button>
+
+      <h3>Get Customer by ID</h3>
+      <input id="customerId" type="number" placeholder="Customer ID" />
+      <button onclick="getCustomerById()">Get Customer</button>
+
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="customerOutput">Waiting for action...</pre>
+      </div>
+      <hr />
+    </section>
+
+    <!-- ================= RESERVATIONS SECTION ================= -->
+    <section>
+      <h2>Reservations</h2>
+      <button onclick="getAllReservations()">Get All Reservations</button>
+
+      <h3>Get Reservation by Customer ID</h3>
+      <input
+        id="reservationCustomerId"
+        type="number"
+        placeholder="Customer ID"
+      />
+      <button onclick="getReservationsByCustomer()">Get Reservation</button>
+
+      <h3>Get Reservation by Room Number</h3>
+      <input
+        id="reservationRoomNumber"
+        type="number"
+        placeholder="Room Number"
+      />
+      <button onclick="getReservationsByRoom()">Get Reservation</button>
+
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="reservationOutput">Waiting for action...</pre>
+      </div>
+      <hr />
+    </section>
+
+    <!-- ================= AVAILS SECTION ================= -->
+    <section>
+      <h2>Avails (Booked Services)</h2>
+      <button onclick="getAllAvails()">Get All Avails</button>
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="availsOutput">Waiting for action...</pre>
+      </div>
+      <hr />
+    </section>
+
+    <!-- ================= PAYMENTS SECTION ================= -->
+    <section>
+      <h2>Payments</h2>
+      <button onclick="getAllPayments()">Get All Payments</button>
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="paymentOutput">Waiting for action...</pre>
+      </div>
+      <hr />
+    </section>
+
+    <!-- ================= STAFF ASSIGNMENTS SECTION ================= -->
+    <section>
+      <h2>Staff Assignments</h2>
+
+      <button onclick="getAllAssignments()">Get All Assignments</button>
+
+      <h3>Get Assignment by Room Number</h3>
+      <input id="assignRoomInput" type="number" placeholder="Room Number" />
+      <button onclick="getAssignmentByRoom()">Get Assignment</button>
+
+      <h3>Get Assignment by Staff ID</h3>
+      <input id="assignStaffInput" type="number" placeholder="Staff ID" />
+      <button onclick="getAssignmentByStaff()">Get Assignments</button>
+
+      <div class="response">
+        <h3>Response:</h3>
+        <pre id="assignmentOutput">Waiting for action...</pre>
+      </div>
+
+      <hr />
+    </section>
+  </body>
+</html>
