@@ -585,17 +585,11 @@ async function checkAndShowBookingForm() {
   }
 
   try {
-    const res = await fetch(`${ROOM_API}/${roomNumber}`);
-    const room = await res.json();
+    const res = await fetch(`http://localhost:5000/api/rooms/check/${roomNumber}`);
+    const data = await res.json();
 
-    if (
-      !res.ok ||
-      !room ||
-      !room.data ||
-      room.data.length === 0 ||
-      room.data[0].Status !== "Vacant"
-    ) {
-      return alert("This room is not available for booking.");
+    if (!res.ok || !data.success) {
+      return alert(data.message);
     }
 
     selectedRoomNumber = roomNumber;
@@ -604,6 +598,7 @@ async function checkAndShowBookingForm() {
     output.textContent = "Error: " + err.message;
   }
 }
+
 
 // STEP 2: Save customer details and show payment form
 async function submitBooking(event) {

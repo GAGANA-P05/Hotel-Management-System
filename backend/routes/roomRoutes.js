@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const {
     getAllRooms,
     getAvailableRooms,
@@ -9,20 +10,24 @@ const {
     getDeluxeRooms,
     getRoomByNumber,
     updateRoomStatus,
-    updateRoomPrice
- 
+    updateRoomPrice,
+    checkRoomAvailability  
 } = require('../controllers/roomController');
 
-// Routes
-router.get('/', getAllRooms);                    // GET /api/rooms
-router.get('/available', getAvailableRooms);     // GET /api/rooms/available
-router.get('/Maintenance', getMaintenanceRooms);     // GET /api/rooms/Maintenance
-router.get('/Reserved', getReservedRooms);     // GET /api/rooms/Reserved
-router.get('/Deluxe', getDeluxeRooms);     // GET /api/rooms/Deluxe
-router.get('/Standard', getStandardRooms);     // GET /api/rooms/Standard
-router.get('/:roomNumber', getRoomByNumber);     // GET /api/rooms/101
-router.put('/:roomNumber', updateRoomStatus);    // PUT /api/rooms/101
-router.put('/:roomNumber/price', updateRoomPrice);
+// ================== FIX: Availability Check Route FIRST ==================
+router.get('/check/:roomNumber', checkRoomAvailability);  
+// GET /api/rooms/check/101
 
+// ================== EXISTING ROUTES ==================
+router.get('/', getAllRooms);                     
+router.get('/available', getAvailableRooms);
+router.get('/maintenance', getMaintenanceRooms);
+router.get('/reserved', getReservedRooms);
+router.get('/deluxe', getDeluxeRooms);
+router.get('/standard', getStandardRooms);
+router.get('/:roomNumber', getRoomByNumber);      
+
+router.put('/:roomNumber', updateRoomStatus);
+router.put('/:roomNumber/price', updateRoomPrice);
 
 module.exports = router;

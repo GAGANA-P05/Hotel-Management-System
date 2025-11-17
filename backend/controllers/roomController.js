@@ -214,6 +214,36 @@ const updateRoomPrice = async (req, res) => {
     }
 };
 
+// ================= CHECK ROOM AVAILABILITY =================
+const checkRoomAvailability = async (req, res) => {
+  try {
+    const { roomNumber } = req.params;
+
+    if (!roomNumber) {
+      return res.status(400).json({ success: false, error: "Room number required" });
+    }
+
+    // Call the SQL function
+    const [result] = await db.query("SELECT CheckRoomAvailability(?) AS available", [roomNumber]);
+    const isAvailable = result[0].available;
+
+    if (isAvailable) {
+      res.status(200).json({
+        success: true,
+        message: `Room ${roomNumber} is available for booking.`,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: `Room ${roomNumber} is not available or does not exist.`,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+
 
 module.exports = {
     getAllRooms,
@@ -224,5 +254,6 @@ module.exports = {
     getDeluxeRooms,
     getRoomByNumber,
     updateRoomStatus,
-    updateRoomPrice
+    updateRoomPrice,
+    checkRoomAvailability
 };
