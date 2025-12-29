@@ -11,16 +11,325 @@ const socket = io("http://localhost:5000");
 socket.on("serviceUpdated", getAllServices);
 socket.on("roomUpdated", getAllRooms);
 
-// ======================= GENERIC DISPLAY FUNCTION =======================
-async function showResult(promise, outputId) {
+// ======================= BEAUTIFUL UI DISPLAY FUNCTIONS =======================
+
+function createRoomCard(room) {
+  // Check if room data is invalid or empty
+  if (!room || !room.Room_Number) {
+    return '<div class="message-box message-error">Invalid room number. Room numbers must be between 100 and 120.</div>';
+  }
+  
+  // Safe handling of potentially undefined values
+  const roomStatus = room.Status || 'Unknown';
+  const roomType = room.Type || 'Standard';
+  const roomPrice = room.Price ? parseFloat(room.Price).toLocaleString() : '0';
+  
+  return `
+    <div class="data-card">
+      <div class="data-card-title">Room ${room.Room_Number}</div>
+      <div class="data-card-row">
+        <span class="data-card-label">Type</span>
+        <span class="type-badge">${roomType}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Status</span>
+        <span class="status-badge status-${roomStatus.toLowerCase()}">${roomStatus}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Price</span>
+        <span class="price-display">₹${roomPrice}</span>
+      </div>
+    </div>
+  `;
+}
+
+function createServiceCard(service) {
+  const isAvailable = service.Availability === 1;
+  return `
+    <div class="data-card">
+      <div class="data-card-title service">${service.Service_Name}</div>
+      <div class="data-card-row">
+        <span class="data-card-label">Service ID</span>
+        <span class="data-card-value">#${service.Service_ID}</span>
+      </div>
+      <div class="data-card-row" style="display: block; padding: 15px 0;">
+        <div class="data-card-label" style="margin-bottom: 8px;">Description</div>
+        <div style="color: #e6edf3; font-size: 0.9rem; line-height: 1.6; text-align: left; white-space: normal; word-wrap: break-word;">${service.Description}</div>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Price</span>
+        <span class="price-display">₹${parseFloat(service.Price).toLocaleString()}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Availability</span>
+        <span class="availability-badge availability-${isAvailable ? 'available' : 'unavailable'}">
+          ${isAvailable ? 'Available' : 'Unavailable'}
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function createStaffCard(staff) {
+  return `
+    <div class="data-card">
+      <div class="data-card-title staff">${staff.Name}</div>
+      <div class="data-card-row">
+        <span class="data-card-label">Staff ID</span>
+        <span class="data-card-value">#${staff.Staff_ID}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Email</span>
+        <span class="data-card-value">${staff.Email}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Phone</span>
+        <span class="data-card-value">${staff.Phone}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Address</span>
+        <span class="data-card-value">${staff.Address}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Task</span>
+        <span class="type-badge">${staff.Task}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Salary</span>
+        <span class="price-display">₹${parseFloat(staff.Salary).toLocaleString()}</span>
+      </div>
+    </div>
+  `;
+}
+
+function createCustomerCard(customer) {
+  return `
+    <div class="data-card">
+      <div class="data-card-title customer">${customer.Name}</div>
+      <div class="data-card-row">
+        <span class="data-card-label">Customer ID</span>
+        <span class="data-card-value">#${customer.Customer_ID}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Email</span>
+        <span class="data-card-value">${customer.Email}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Phone</span>
+        <span class="data-card-value">${customer.Phone}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Age</span>
+        <span class="data-card-value">${customer.Age} years</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Address</span>
+        <span class="data-card-value">${customer.Address}</span>
+      </div>
+    </div>
+  `;
+}
+
+function createReservationCard(reservation) {
+  return `
+    <div class="data-card">
+      <div class="data-card-title reservation">Reservation #${reservation.Reservation_ID}</div>
+      <div class="data-card-row">
+        <span class="data-card-label">Customer ID</span>
+        <span class="data-card-value">#${reservation.Customer_ID}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Room Number</span>
+        <span class="data-card-value">${reservation.Room_Number}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Check-in</span>
+        <span class="data-card-value">${new Date(reservation.Check_in_date).toLocaleDateString()}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Check-out</span>
+        <span class="data-card-value">${new Date(reservation.Check_out_date).toLocaleDateString()}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Duration</span>
+        <span class="data-card-value">${reservation.Number_of_days} days</span>
+      </div>
+    </div>
+  `;
+}
+
+function createPaymentCard(payment) {
+  return `
+    <div class="data-card">
+      <div class="data-card-title payment">Payment #${payment.Payment_ID}</div>
+      <div class="data-card-row">
+        <span class="data-card-label">Reservation ID</span>
+        <span class="data-card-value">#${payment.Reservation_ID}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Amount</span>
+        <span class="price-display">₹${parseFloat(payment.Amount).toLocaleString()}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Payment Mode</span>
+        <span class="type-badge">${payment.Payment_mode}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Date</span>
+        <span class="data-card-value">${new Date(payment.Payment_date).toLocaleString()}</span>
+      </div>
+    </div>
+  `;
+}
+
+function createAvailCard(avail) {
+  return `
+    <div class="data-card">
+      <div class="data-card-title service">Service Booking</div>
+      <div class="data-card-row">
+        <span class="data-card-label">Customer ID</span>
+        <span class="data-card-value">#${avail.Customer_ID}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Service ID</span>
+        <span class="data-card-value">#${avail.Service_ID}</span>
+      </div>
+      <div class="data-card-row">
+        <span class="data-card-label">Reservation ID</span>
+        <span class="data-card-value">#${avail.Reservation_ID}</span>
+      </div>
+    </div>
+  `;
+}
+
+function createAssignmentCard(assign) {
+  return `
+    <div class="data-card">
+      <div class="data-card-title assignment">Assignment #${assign.Assignment_ID}</div>
+
+      <div class="data-card-row">
+        <span class="data-card-label">Room Number</span>
+        <span class="data-card-value">${assign.Room_Number}</span>
+      </div>
+
+      <div class="data-card-row">
+        <span class="data-card-label">Staff ID</span>
+        <span class="data-card-value">#${assign.Staff_ID}</span>
+      </div>
+
+      <div class="data-card-row">
+        <span class="data-card-label">Staff Name</span>
+        <span class="data-card-value">${assign.Name}</span>
+      </div>
+
+      <div class="data-card-row">
+        <span class="data-card-label">Task</span>
+        <span class="type-badge">${assign.Task}</span>
+      </div>
+    </div>
+  `;
+}
+
+function displayData(data, outputId, cardType) {
   const box = document.getElementById(outputId);
+  
+  // Handle different data structures
+  let dataArray = [];
+  
+  if (Array.isArray(data)) {
+    dataArray = data;
+  } else if (data && data.data) {
+    if (Array.isArray(data.data)) {
+      dataArray = data.data;
+    } else {
+      dataArray = [data.data];
+    }
+  } else if (data) {
+    dataArray = [data];
+  }
+  
+  if (!dataArray || dataArray.length === 0) {
+    box.innerHTML = '<div class="empty-state">No data found</div>';
+    return;
+  }
+
+  let cardsHTML = '<div class="data-grid">';
+  
+  dataArray.forEach(item => {
+    switch(cardType) {
+      case 'room':
+        cardsHTML += createRoomCard(item);
+        break;
+      case 'service':
+        cardsHTML += createServiceCard(item);
+        break;
+      case 'staff':
+        cardsHTML += createStaffCard(item);
+        break;
+      case 'customer':
+        cardsHTML += createCustomerCard(item);
+        break;
+      case 'reservation':
+        cardsHTML += createReservationCard(item);
+        break;
+      case 'payment':
+        cardsHTML += createPaymentCard(item);
+        break;
+      case 'avail':
+        cardsHTML += createAvailCard(item);
+        break;
+      case 'assignment':
+        cardsHTML += createAssignmentCard(item);
+        break;
+
+    }
+  });
+  
+  cardsHTML += '</div>';
+  box.innerHTML = cardsHTML;
+}
+
+function displayMessage(message, outputId, isSuccess = true) {
+  const box = document.getElementById(outputId);
+  const messageClass = isSuccess ? 'message-success' : 'message-error';
+  box.innerHTML = `<div class="message-box ${messageClass}">${message}</div>`;
+}
+
+// ======================= GENERIC DISPLAY FUNCTION =======================
+async function showResult(promise, outputId, cardType = null) {
+  const box = document.getElementById(outputId);
+  box.innerHTML = '<div style="text-align: center; padding: 20px; color: #67e8f9;">Loading...</div>';
+  
   try {
     const res = await promise;
     const data = await res.json();
-    box.textContent = JSON.stringify(data, null, 2);
-    if (!res.ok && data.error) alert(data.error);
+    
+    if (!res.ok) {
+      if (data.error) {
+        displayMessage(data.error, outputId, false);
+        alert(data.error);
+      } else {
+        box.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      }
+      return;
+    }
+    
+    // If we have a card type, display as cards
+    if (cardType && data.data) {
+      displayData(data, outputId, cardType);
+      return;
+    }
+    
+    // If it's a single operation result (success message) WITHOUT data array
+    if ((data.success || data.message) && !data.data) {
+      displayMessage(data.message || 'Operation completed successfully!', outputId, true);
+      return;
+    }
+    
+    // Fallback to JSON display
+    box.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
   } catch (err) {
-    box.textContent = "Error: " + err.message;
+    displayMessage('Error: ' + err.message, outputId, false);
   }
 }
 
@@ -41,7 +350,7 @@ async function managerLogin() {
       body: JSON.stringify({ email, password }),
     });
     const data = await res.json();
-    output.textContent = JSON.stringify(data, null, 2);
+    output.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 
     if (data.success) {
       alert("Manager logged in successfully.");
@@ -61,32 +370,32 @@ function logoutManager() {
 
 // ======================= ROOM FUNCTIONS =======================
 function getAllRooms() {
-  showResult(fetch(`${ROOM_API}`), "roomOutput");
+  showResult(fetch(`${ROOM_API}`), "roomOutput", "room");
 }
 
 function getAvailableRooms() {
-  showResult(fetch(`${ROOM_API}/available`), "roomOutput");
+  showResult(fetch(`${ROOM_API}/available`), "roomOutput", "room");
 }
 
 function getReservedRooms() {
-  showResult(fetch(`${ROOM_API}/reserved`), "roomOutput");
+  showResult(fetch(`${ROOM_API}/reserved`), "roomOutput", "room");
 }
 
 function getMaintenanceRooms() {
-  showResult(fetch(`${ROOM_API}/maintenance`), "roomOutput");
+  showResult(fetch(`${ROOM_API}/maintenance`), "roomOutput", "room");
 }
 
 function getDeluxeRooms() {
-  showResult(fetch(`${ROOM_API}/deluxe`), "roomOutput");
+  showResult(fetch(`${ROOM_API}/deluxe`), "roomOutput", "room");
 }
 
 function getStandardRooms() {
-  showResult(fetch(`${ROOM_API}/standard`), "roomOutput");
+  showResult(fetch(`${ROOM_API}/standard`), "roomOutput", "room");
 }
 
 function getRoomByNumber() {
   const number = document.getElementById("roomNumber").value;
-  showResult(fetch(`${ROOM_API}/${number}`), "roomOutput");
+  showResult(fetch(`${ROOM_API}/${number}`), "roomOutput", "room");
 }
 
 function updateRoomPrice() {
@@ -118,19 +427,19 @@ function updateRoomStatus() {
 
 // ======================= SERVICE FUNCTIONS =======================
 function getAllServices() {
-  showResult(fetch(`${SERVICE_API}`), "serviceOutput");
+  showResult(fetch(`${SERVICE_API}`), "serviceOutput", "service");
 }
 
 function getAvailableServices() {
-  showResult(fetch(`${SERVICE_API}/available`), "serviceOutput");
+  showResult(fetch(`${SERVICE_API}/available`), "serviceOutput", "service");
 }
 
 function getUnavailableServices() {
-  showResult(fetch(`${SERVICE_API}/unavailable`), "serviceOutput");
+  showResult(fetch(`${SERVICE_API}/unavailable`), "serviceOutput", "service");
 }
 
 function getServiceById() {
-  showResult(fetch(`${SERVICE_API}/${serviceId.value}`), "serviceOutput");
+  showResult(fetch(`${SERVICE_API}/${serviceId.value}`), "serviceOutput", "service");
 }
 
 function addService() {
@@ -204,17 +513,17 @@ function deleteService() {
 
 // ======================= STAFF FUNCTIONS =======================
 function getAllStaff() {
-  showResult(fetch(`${STAFF_API}`), "staffOutput");
+  showResult(fetch(`${STAFF_API}`), "staffOutput", "staff");
 }
 
 function getStaffById() {
   const staffId = document.getElementById("staffId").value;
-  showResult(fetch(`${STAFF_API}/${staffId}`), "staffOutput");
+  showResult(fetch(`${STAFF_API}/${staffId}`), "staffOutput", "staff");
 }
 
 function getStaffByTask() {
   const task = staffTaskSelect.value;
-  showResult(fetch(`${STAFF_API}/task/${task}`), "staffOutput");
+  showResult(fetch(`${STAFF_API}/task/${task}`), "staffOutput", "staff");
 }
 
 function addStaff() {
@@ -276,17 +585,11 @@ async function checkAndShowBookingForm() {
   }
 
   try {
-    const res = await fetch(`${ROOM_API}/${roomNumber}`);
-    const room = await res.json();
+    const res = await fetch(`http://localhost:5000/api/rooms/check/${roomNumber}`);
+    const data = await res.json();
 
-    if (
-      !res.ok ||
-      !room ||
-      !room.data ||
-      room.data.length === 0 ||
-      room.data[0].Status !== "Vacant"
-    ) {
-      return alert("This room is not available for booking.");
+    if (!res.ok || !data.success) {
+      return alert(data.message);
     }
 
     selectedRoomNumber = roomNumber;
@@ -295,6 +598,7 @@ async function checkAndShowBookingForm() {
     output.textContent = "Error: " + err.message;
   }
 }
+
 
 // STEP 2: Save customer details and show payment form
 async function submitBooking(event) {
@@ -319,14 +623,24 @@ async function submitBooking(event) {
     });
 
     const result = await res.json();
-    output.textContent = JSON.stringify(result, null, 2);
 
     if (res.ok) {
-      alert(`Customer details saved successfully for Room ${roomNumber}`);
-
       latestCustomerId =
         result.customer_id || result.Customer_ID || result.insertId;
 
+      // Display beautiful success message
+      output.innerHTML = `
+        <div class="message-box message-success">
+          <div>
+            <strong>✓ Customer Details Saved!</strong><br>
+            Your Customer ID is: <strong>#${latestCustomerId}</strong><br>
+            Please note this ID for future service bookings.<br>
+            Now proceeding to payment for Room ${roomNumber}...
+          </div>
+        </div>
+      `;
+
+      alert(`Customer details saved successfully for Room ${roomNumber}`);
       alert(`Your Customer ID is ${latestCustomerId}. Please note it for service bookings.`);
 
       document.getElementById("customerFormContainer").style.display = "none";
@@ -341,10 +655,11 @@ async function submitBooking(event) {
         document.getElementById("checkOutDate").setAttribute("min", checkIn);
       });
     } else {
+      displayMessage("Failed to save customer details: " + (result.error || "Unknown error"), "bookingOutput", false);
       alert("Failed to save customer details");
     }
   } catch (err) {
-    output.textContent = "Error: " + err.message;
+    displayMessage("Error: " + err.message, "bookingOutput", false);
   }
 }
 
@@ -395,10 +710,11 @@ async function submitPayment(event) {
     });
 
     const reservationResult = await reservationRes.json();
-    output.textContent = JSON.stringify(reservationResult, null, 2);
 
-    if (!reservationRes.ok)
+    if (!reservationRes.ok) {
+      displayMessage("Reservation creation failed. Try again.", "bookingOutput", false);
       return alert("Reservation creation failed. Try again.");
+    }
 
     const reservationId =
       reservationResult.Reservation_ID || reservationResult.insertId;
@@ -421,10 +737,23 @@ async function submitPayment(event) {
       body: JSON.stringify({ Status: "Reserved" }),
     });
 
+    // Display beautiful success message
+    output.innerHTML = `
+      <div class="message-box message-success">
+        <div>
+          <strong>🎉 Payment Successful!</strong><br>
+          Room ${roomNumber} has been booked successfully.<br>
+          Reservation ID: #${reservationId}<br>
+          Total Amount: ₹${amount.toLocaleString()}<br>
+          Duration: ${numDays} days (${new Date(checkIn).toLocaleDateString()} - ${new Date(checkOut).toLocaleDateString()})
+        </div>
+      </div>
+    `;
+    
     alert("Payment successful. Room booked successfully.");
     document.getElementById("paymentFormContainer").style.display = "none";
   } catch (err) {
-    output.textContent = "Error: " + err.message;
+    displayMessage("Error: " + err.message, "bookingOutput", false);
   }
 }
 
@@ -569,6 +898,8 @@ async function bookService() {
   const customerId = String(document.getElementById("serviceCustomerId").value || "").trim();
   const serviceId = String(document.getElementById("serviceIdInput").value || "").trim();
   const paymentMode = document.getElementById("servicePaymentMode").value;
+  const serviceName = document.getElementById("serviceNameDisplay").value;
+  const servicePrice = document.getElementById("servicePriceDisplay").value;
 
   if (!customerId || !serviceId || !paymentMode) {
     return alert("Please enter Customer ID, Service ID and choose a payment mode.");
@@ -587,16 +918,32 @@ async function bookService() {
     });
 
     const result = await res.json();
-    output.textContent = JSON.stringify(result, null, 2);
 
     if (!res.ok) {
+      // Show error message in beautiful format
+      output.innerHTML = `<div class="message-box message-error">${result.error || 'Service booking failed. Please try again.'}</div>`;
       if (result && result.error) alert(result.error);
       else alert("Service booking failed. See console/output.");
       return;
     }
 
-    alert("Service booked and payment recorded.");
-    // clean UI
+    // Show beautiful success message
+    output.innerHTML = `
+      <div class="message-box message-success">
+        <div>
+          <strong>🎉 Service Booked Successfully!</strong><br>
+          Service: <strong>${serviceName}</strong><br>
+          Amount Paid: <strong>₹${parseFloat(servicePrice).toLocaleString()}</strong><br>
+          Payment Mode: <strong>${paymentMode}</strong><br>
+          Reservation ID: <strong>#${result.Reservation_ID || 'N/A'}</strong><br>
+          Avail ID: <strong>#${result.Avail_ID || 'N/A'}</strong>
+        </div>
+      </div>
+    `;
+
+    alert("Service booked and payment recorded successfully!");
+    
+    // Clean UI
     document.getElementById("serviceCustomerId").value = "";
     document.getElementById("serviceIdInput").value = "";
     document.getElementById("serviceNameDisplay").value = "";
@@ -604,7 +951,7 @@ async function bookService() {
     document.getElementById("servicePaymentMode").value = "";
     document.getElementById("payServiceBtn").disabled = true;
   } catch (err) {
-    output.textContent = "Error booking service: " + err.message;
+    output.innerHTML = `<div class="message-box message-error">Error booking service: ${err.message}</div>`;
   }
 }
 
@@ -612,37 +959,63 @@ async function bookService() {
 
 // Get all customers
 function getAllCustomers() {
-  showResult(fetch("http://localhost:5000/api/customers"), "customerOutput");
+  showResult(fetch("http://localhost:5000/api/customers"), "customerOutput", "customer");
 }
 
 // Get all reservations
 function getAllReservations() {
-  showResult(fetch("http://localhost:5000/api/reservations"), "reservationOutput");
+  showResult(fetch("http://localhost:5000/api/reservations"), "reservationOutput", "reservation");
 }
 
 // Get all avails
 function getAllAvails() {
-  showResult(fetch("http://localhost:5000/api/avails"), "availsOutput");
+  showResult(fetch("http://localhost:5000/api/avails"), "availsOutput", "avail");
 }
 
 // Get all payments
 function getAllPayments() {
-  showResult(fetch("http://localhost:5000/api/payments"), "paymentOutput");
+  showResult(fetch("http://localhost:5000/api/payments"), "paymentOutput", "payment");
 }
 
 // Customers
 async function getCustomerById() {
   const id = document.getElementById("customerId").value;
-  showResult(fetch(`${CUSTOMER_API}/${id}`), "customerOutput");
+  showResult(fetch(`${CUSTOMER_API}/${id}`), "customerOutput", "customer");
 }
 
 // Reservations
 async function getReservationsByCustomer() {
   const id = document.getElementById("reservationCustomerId").value;
-  showResult(fetch(`${RESERVATION_API}/customer/${id}`), "reservationOutput");
+  showResult(fetch(`${RESERVATION_API}/customer/${id}`), "reservationOutput", "reservation");
 }
 
 async function getReservationsByRoom() {
   const room = document.getElementById("reservationRoomNumber").value;
-  showResult(fetch(`${RESERVATION_API}/room/${room}`), "reservationOutput");
+  showResult(fetch(`${RESERVATION_API}/room/${room}`), "reservationOutput", "reservation");
+}
+
+function getAllAssignments() {
+  showResult(
+    fetch("http://localhost:5000/api/assignments"),
+    "assignmentOutput",
+    "assignment"
+  );
+}
+
+function getAssignmentByRoom() {
+  const room = document.getElementById("assignRoomInput").value;
+  showResult(
+    fetch(`http://localhost:5000/api/assignments/room/${room}`),
+    "assignmentOutput",
+    "assignment"
+  );
+}
+
+function getAssignmentByStaff() {
+  const staff = document.getElementById("assignStaffInput").value;
+  showResult(
+    fetch(`http://localhost:5000/api/assignments/staff/${staff}`),
+    "assignmentOutput",
+    "assignment"
+  );
 }
